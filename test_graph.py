@@ -7,7 +7,7 @@ import numpy as np
 import time
 
 graph = AttentionGraph(3, 16)
-x = tensor([[0, 0.0, 0], [0, 1, 0], [0, 0, 2], [3.0, 0, 0], [0, 4.0, 0]])
+x = tensor([[0, 0.0, 0], [1, 0, 0], [2, 0, 0], [3.0, 0, 0], [4.0, 0, 0]])
 y = tensor([[1], [0], [1.0], [0.0], [1.0]])
 
 graph._add_node() # 0
@@ -26,7 +26,7 @@ bce = nn.BCELoss()
 optimizer = optim.Adam(graph.parameters(), lr = 0.01) 
 
 def run(x, y):
-  epochs = 100
+  epochs = 150
   e = 1
   losses = []
   while e <= epochs:
@@ -43,6 +43,7 @@ def run(x, y):
   return losses
 
 losses = run(x, y)
+print(graph._nodes[2].imporant_inp_neighbor)
 times = np.arange(0, len(losses))
 plt.plot(times, losses)
 plt.show()
