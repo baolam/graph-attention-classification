@@ -116,9 +116,8 @@ class Attention(nn.Module):
     output_size = (x_.size()[1], x_.size()[2])
     y = zeros(output_size)
     for i in range(x_.size()[0]):
-      t = x_[i].reshape((self._da), -1) * self.imporant_inp_neighbor[i]
-      t = t.reshape((-1, self._da))
-      y = y + t
+      t = x_[i].T * self.imporant_inp_neighbor[i]
+      y = y + t.T
     return y
     
   def _build_important_neighbor(self, x : Tensor):
@@ -129,7 +128,7 @@ class Attention(nn.Module):
     
     for j in range(len(self.inp_neighbors)):
       temp : FakeAttention = self._get_infor(self.inp_neighbors[j])
-      t[j] = temp.effect_result.reshape(x.size()[0])
+      t[j] = temp.effect_result.view(-1)
       n[j] = temp.transform_result
     
     self.imporant_inp_neighbor = softmax(t, dim=0) # Cột

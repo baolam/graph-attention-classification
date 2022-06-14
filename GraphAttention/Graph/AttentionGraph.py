@@ -25,8 +25,9 @@ class AttentionGraph(nn.Module):
     visited = [False] * len(self._nodes)
     topo = []
     for i in range(len(self._inps)):
-      visited[self._inps[i]] = True
-      self.__dfs(topo, self._nodes[i], visited)
+      if not visited[self._inps[i]]:
+        visited[self._inps[i]] = True
+        self.__dfs(topo, self._nodes[self._inps[i]], visited)
     
     # Thứ tự topo cho từng 
     # đỉnh đầu vào
